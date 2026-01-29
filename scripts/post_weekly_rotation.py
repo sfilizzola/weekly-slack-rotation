@@ -49,7 +49,7 @@ def main():
 
     team = teams[idx]
     guide_part = f" You can find the how-to react guide here: {GUIDE_URL}" if GUIDE_URL else ""
-    text = f"This week the alerts should be tackled by *{team}*.{guide_part}"
+    text = f"This week the alerts should be handled by *{team}*.{guide_part}"
 
     post_to_slack(WEBHOOK_URL, text)
 
