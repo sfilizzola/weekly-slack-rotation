@@ -1,0 +1,32 @@
+name: Weekly Slack rotation
+
+on:
+  schedule:
+    # Monday 08:00 UTC (09:00 Berlin in winter; 10:00 in summer)
+    - cron: "0 8 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Post message + rotate
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GUIDE_URL: ${{ vars.GUIDE_URL }}
+        run: |
+          python3 scripts/post_weekly_rotation.py
+
+      - name: Commit updated rotation_state.json
+        run: |
+          git config user.name "weekly-rotation-bot"
+          git config user.email "weekly-rotation-bot@users.noreply.github.com"
+          git add rotation_state.json
+          git commit -m "chore: rotate weekly alerts team" || echo "No changes to commit"
+          git push
