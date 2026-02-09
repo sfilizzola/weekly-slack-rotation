@@ -21,7 +21,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_URL_2: ${{ secrets.SLACK_WEBHOOK_URL_2 }}
           GUIDE_URL: ${{ vars.GUIDE_URL }}
-          DRY_RUN: "true"
+          DRY_RUN: "false"
         run: |
           python3 scripts/post_weekly_rotation.py
 
