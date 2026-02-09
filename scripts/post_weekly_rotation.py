@@ -10,6 +10,8 @@ WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "").strip()
 WEBHOOK_URL_2 = os.environ.get("SLACK_WEBHOOK_URL_2", "").strip()
 GUIDE_URL = os.environ.get("GUIDE_URL", "").strip()
 
+DRY_RUN = os.environ.get("DRY_RUN", "").strip().lower() in ("1", "true", "yes")
+
 def die(msg: str, code: int = 1):
     print(msg)
     sys.exit(code)
@@ -51,6 +53,13 @@ def main():
     team = teams[idx]
     guide_part = f" You can find the how-to react guide here: {GUIDE_URL}" if GUIDE_URL else ""
     text = f"This week the alerts should be handled by *{team}*.{guide_part}"
+
+    print(f"Selected team: {team}")
+    print(f"Message: {text}")
+
+    if DRY_RUN:
+        print("DRY_RUN enabled: not posting to Slack and not rotating.")
+        return
 
     post_to_slack(WEBHOOK_URL, text)
 
