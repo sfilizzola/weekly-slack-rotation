@@ -7,6 +7,7 @@ TEAMS_FILE = "teams.json"
 STATE_FILE = "rotation_state.json"
 
 WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "").strip()
+WEBHOOK_URL_2 = os.environ.get("SLACK_WEBHOOK_URL_2", "").strip()
 GUIDE_URL = os.environ.get("GUIDE_URL", "").strip()
 
 def die(msg: str, code: int = 1):
@@ -53,6 +54,9 @@ def main():
 
     post_to_slack(WEBHOOK_URL, text)
 
+    if WEBHOOK_URL_2:
+        post_to_slack(WEBHOOK_URL_2, text)
+        
     # rotate
     state["index"] = (idx + 1) % len(teams)
     save_json(STATE_FILE, state)
